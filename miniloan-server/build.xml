@@ -1,0 +1,139 @@
+<?xml version="1.0"?>
+<!-- Licensed Materials - Property of IBM                           -->
+<!-- 5725-B69 5655-Y17 5655-Y31 5724-X98 5724-Y15 5655-V82                                     -->
+<!-- Copyright IBM Corp. 1987, 2018. All Rights Reserved            -->
+<!-- US Government Users Restricted Rights - Use, duplication or    -->
+<!-- disclosure restricted by GSA ADP Schedule Contract with        -->
+<!-- IBM Corp.                                                      -->
+
+
+<project name="Miniloan Web application build targets" default="all" basedir=".">
+	<property name="ds.home" value="${basedir}/../../../.." />
+	<property file="${ds.home}/shared/samplesServer/wlp/build.properties" />
+	<property name="odm.wlp.scripts.dir" value="${ds.home}/shared/samplesServer/wlp" />
+	<import file="${odm.wlp.scripts.dir}/build.xml" />
+
+	<property file="gettingstarted.properties" prefix="gettingstarted" />
+	<property name="executionserver.home" location="${ds.home}/executionserver" />
+
+	<import file="${executionserver.home}/lib/classpath-executionserver.xml" />
+
+	<target name="all" depends="war,install" description="Builds and installs the Miniloan Web Application on the server.">
+	</target>
+
+	<!-- Initialize property variable -->
+	<target name="init">
+		<property name="src.dir" value="./src/main/java" />
+		<property name="i18n.dir" value="./src/main/i18n" />
+		<property name="resources.dir" value="./src/main/resources" />
+		<property name="xom.src.dir" value="../miniloan-xom/src" />
+		<property name="lib.dir" value="./lib" />
+		<property name="build.dir" value="./target" />
+		<property name="classes.dir" value="${build.dir}/classes" />
+		<property name="descriptor.dir" value="./src/main/webapp/WEB-INF" />
+		<property name="war.dir" value="${ds.home}/gettingstarted/applicationserver" />
+		<property name="appwar" value="miniloan-server.war" />
+		<property name="websrc" location="./src/main/webapp" />
+		<property name="apache.home" location="/Users/msharma/softwares/apache-tomee-plus-8.0.12" />
+		<path id="webapp.classpath">
+			<!--fileset dir="${wlp.home}/dev/api/spec">
+				<include name="com.ibm.*.javaee.jsonp.1.0*.jar" />
+				<include name="com.ibm.*.javaee.servlet.3.1*.jar" /-->
+				<!--include name="io.openliberty.jakarta.jsonp.2.0_1.0.68.jar" />
+				<include name="io.openliberty.jakarta.servlet.5.0_1.0.68.jar" />
+			</fileset-->
+			<fileset dir="${executionserver.home}/lib">
+				<include name="jrules-res-execution.jar" />
+				<include name="jrules-engine.jar" />
+				<include name="javax.json-api-1.1.4.jar"/>
+			</fileset>
+			<fileset dir="${apache.home}/lib">
+				<include name="servlet-api.jar" />
+			</fileset>
+			<pathelement path="${classes.dir}" />
+		</path>
+		<path id="xom.classpath">
+			<fileset dir="${executionserver.home}/lib">
+				<include name="jrules-engine.jar" />
+			</fileset>
+			<pathelement path="${classes.dir}" />
+		</path>
+		<delete failonerror="false">
+			<fileset dir="${build.dir}" includes="**/*.class" />
+		</delete>
+		<mkdir dir="${build.dir}" />
+	</target>
+
+
+	<!-- Compile the Xom and Web classes -->
+	<target name="compile" depends="init">
+		<echo message="${gettingstarted.compilingXom}" />
+		<delete failonerror="false">
+			<fileset dir="${classes.dir}" includes="**/*.class" />
+		</delete>
+		<mkdir dir="${classes.dir}" />
+		<javac srcdir="${xom.src.dir}" destdir="${classes.dir}" verbose="on" fork="true" debug="on" includes="miniloan/**">
+			<classpath refid="xom.classpath" />
+		</javac>
+		<echo message="${gettingstarted.compilingClass}" />
+		<echo message="${classes.dir}" />
+		<echo message="${src.dir}" />
+		<javac srcdir="${src.dir}" destdir="${classes.dir}" verbose="on" fork="true" debug="on" includes="com/ibm/odm/**">
+			<classpath refid="webapp.classpath" />
+		</javac>
+		<copy todir="${classes.dir}/">
+			<fileset dir="${i18n.dir}">
+				<include name="**/*.properties" />
+			</fileset>
+		</copy>
+		<copy todir="${classes.dir}/">
+			<fileset dir="${resources.dir}">
+				<include name="ra.xml" />
+			</fileset>
+		</copy>
+	</target>
+	<!-- Package the Xom classes -->
+	<target name="jar" depends="compile">
+		<echo message="${gettingstarted.package}" />
+		<jar destfile="${build.dir}/miniloan-xom.jar" basedir="${classes.dir}" includes="miniloan/**" />
+	</target>
+	<!-- Package the Web Application into a WAR file -->
+	<target name="war" depends="init, jar" description="Builds the Miniloan Server war file">
+		<mkdir dir="${build.dir}/lib"/>
+		<copy todir="${build.dir}/lib">
+			<fileset dir="${executionserver.home}/lib">
+				<patternset refid="executionserver.j2se.classpath.patternset" />
+			</fileset>
+		</copy>
+
+		<war destfile="${build.dir}/${appwar}" webxml="${descriptor.dir}/web.xml">
+			<fileset dir="${websrc}" includes="**/*.*" excludes="/WEB-INF/web.xml" />
+			<classes dir="${classes.dir}">
+				<include name="com/ibm/odm/samples/*.*" />
+				<include name="ra.xml" />
+			</classes>
+			<classes dir="${src.dir}">
+				<include name="com/ibm/odm/samples/*.*" />
+			</classes>
+
+			<lib dir="${build.dir}" includes="miniloan-xom.jar" />
+			<lib dir="${build.dir}/lib" includes="*.jar" />
+		</war>
+	</target>
+
+	<target name="install" depends="init" description="Deploys the Miniloan Web Application on the server">
+		<echo message="${gettingstarted.installingApplication}" />
+		<module.deploy path="${build.dir}/${appwar}" />
+		<module.deploy path="${apache.home}/webapps/${appwar}" />
+		<echo message="${gettingstarted.applicationReady}" />
+	</target>
+	<!-- Utilities -->
+	<target name="clean" depends="init">
+		<delete failonerror="false" includeEmptyDirs="true">
+			<fileset dir="${build.dir}" includes="**/*" />
+			<fileset dir="${classes.dir}">
+				<include name="**/*.class" />
+			</fileset>
+		</delete>
+	</target>
+</project>

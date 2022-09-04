@@ -1,0 +1,34 @@
+
+property loadGetterSetterAsProperties "true"
+property origin "xom:/my decision service//miniloan-xom"
+property uuid "89e8514b-046e-49c7-9480-945ef4f3eaaf"
+package miniloan;
+
+
+public class Borrower
+{
+    public int creditScore;
+    public string name;
+    public int yearlyIncome;
+    public Borrower(string name, int creditScore, int yearlyIncome);
+    public Borrower();
+}
+
+public class Loan
+{
+    public int amount;
+    public readonly string approvalStatus;
+    public boolean approved
+                property "factory.ignore" "true";
+    public int duration;
+    public readonly java.util.Collection messages domain 0,* class string;
+    public double yearlyInterestRate;
+    public readonly int yearlyRepayment;
+    public Loan(int amount, int duration, double yearlyInterestRate)
+                property "dataio.default" "true";
+    public Loan();
+    public void addToMessages(string arg);
+    public void reject();
+    public void removeFromMessages(string arg);
+}
+

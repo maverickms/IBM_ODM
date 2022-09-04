@@ -1,0 +1,157 @@
+<!-- Licensed Materials - Property of IBM                           -->
+<!-- 5725-B69 5655-Y17 5655-Y31 5724-X98 5724-Y15 5655-V82          -->
+<!-- Copyright IBM Corp. 1987, 2018. All Rights Reserved            -->
+<!-- US Government Users Restricted Rights - Use, duplication or    -->
+<!-- disclosure restricted by GSA ADP Schedule Contract with        -->
+<!-- IBM Corp.                                                      -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MiniLoan</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet"
+          href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script
+            src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script
+            src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+    <style type="text/css">
+        .top15 {
+        margin-top: 15px;
+        }
+        .panel {
+        margin: 5px;
+        padding: 5px;
+        }
+        .form-group label {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        }
+        #use-rules {
+            margin-top: 2px;
+        }
+        button .glyphicon-ok {
+            margin-right: 2px;
+        }
+    </style>
+
+</head>
+
+
+<body>
+<div class="container">
+    <div class="jumbotron">
+        <h1>Sample</h1>
+
+        <p id="sample-name">MiniLoan</p>
+    </div>
+    <div>
+        <form role="form" action="validate" method="post" class="form-horizontal">
+            <div class="row">
+                <div class="borrower col-sm-6">
+                    <div class="form-group">
+                        <div class="panel panel-info">
+                            <div class="panel-heading"><h4>Borrower</h4></div>
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label for="name" class="control-label col-xs-4">Name:</label>
+
+                                    <div class="col-xs-8">
+                                        <input type="text"
+                                               class="form-control" id="name" name="name" value="Joe" placeholder="Name">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="yearly-income" class="control-label col-xs-4">Yearly Income:</label>
+
+                                    <div class="col-xs-8">
+                                        <input type="text"
+                                               class="form-control" id="yearly-income" name="yearly-income" value="80000">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="credit-score" class="control-label col-xs-4">Credit Score:</label>
+
+                                    <div class="col-xs-8">
+                                        <input type="text"
+                                               class="form-control" id="credit-score" name="credit-score" value="600">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="loan col-sm-6">
+                    <div class="form-group">
+                        <div class="panel panel-info">
+                            <div class="panel-heading"><h4>Loan</h4></div>
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label for="amount" class="control-label col-xs-4">Amount:</label>
+
+                                    <div class="col-xs-8">
+                                        <input type="text"
+                                               class="form-control" id="amount" name="amount" value="500000">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="duration" class="control-label col-xs-4">Duration:</label>
+
+                                    <div class="col-xs-8">
+                                        <input type="text"
+                                               class="form-control" id="duration" name="duration" value="240">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="yearly-interest-rate" class="control-label col-xs-4">Yearly Interest Rate</label>
+
+                                    <div class="col-xs-8">
+                                        <input type="text"
+                                               class="form-control" id="yearly-interest-rate" name="yearly-interest-rate"
+                                               value="0.05">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div style="text-align: center">
+                        <div class="checkbox">
+                            <label><input type="checkbox" name="use-odm" id="use-odm">Use rules</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div style="text-align: center">
+                    <button type="submit" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-ok"></span>
+                        <span></span>
+                        <span>Validate Loan</span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="row top15">
+        <div id="result-panel" class="panel panel-success">
+            <div id="result-header" class="panel-heading">Result</div>
+            <div id="result-text" class="panel-body" >nothing for now...</div>
+        </div>
+    </div>
+    <div class="row top15">
+        <div id="info-panel" class="panel panel-info">
+            <div class="panel-heading">Information</div>
+            <div id="info-text" class="panel-body" >nothing for now...</div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

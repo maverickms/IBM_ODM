@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<com.ibm.rules.studio.model.decisionservice:Operation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:com.ibm.rules.studio.model.decisionservice="http://com.ibm.rules.studio/model/decisionservice.ecore" xmlns:ilog.rules.studio.model.query.extractor="http://ilog.rules.studio/model/query/extractor.ecore" rulesetName="my_operation" usingRuleflow="true" ruleflowName="miniloan" targetRuleProjectName="my decision service">
+  <name>my operation</name>
+  <uuid>e565f100-b2fc-47f1-90a4-3445dec9e7c5</uuid>
+  <referencedVariables variableName="loan" variableSetName="my parameters" direction="IN_OUT">
+    <variableSet href="../rules/my%20parameters.var#aae2aa9a-bdd9-4931-b138-73521cb9e150"/>
+  </referencedVariables>
+  <referencedVariables variableName="borrower" variableSetName="my parameters">
+    <variableSet href="../rules/my%20parameters.var#aae2aa9a-bdd9-4931-b138-73521cb9e150"/>
+  </referencedVariables>
+  <ruleflow href="../rules/miniloan.rfl#74253d33-ff4f-4b46-80b7-6eaeea1d229e"/>
+  <extractor xsi:type="ilog.rules.studio.model.query.extractor:QueryExtractor" name="my operation_extractor" validator="Default Validator"/>
+  <targetRuleProject href="../../my%20decision%20service#edbfbef2-1b1d-4ab4-a185-85cc5eaff51c"/>
+</com.ibm.rules.studio.model.decisionservice:Operation>
